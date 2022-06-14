@@ -1,5 +1,3 @@
-let currPlayer;
-
 /**
  * Player factory function
  * @param {String} name player's name
@@ -11,7 +9,7 @@ const player = (name, piece) => {
 }
 
 /**
- * gameBoard module pattern object
+ * gameBoard module 
  */
 const gameBoard = (() => {
     let board = ['','','','','','','','',''];
@@ -30,18 +28,38 @@ const gameBoard = (() => {
         }
     }
 
-    return { board, setPlayer }
+    return { board, setCell, getCell, resetBoard };
 })();
 
-// Controller for displaying Game
+// factory function for displaying the game
 const displayController = (() => {
-    cells = document.querySelectorAll('.cell')
+    cells = document.querySelectorAll('.cell');
+    resetBtn = document.getElementById('reset-btn');
+
+    cells.forEach(cell => {
+        cell.addEventListener("click", (e) => {
+            if (e.target.textContent !== "") return;
+            updateGameBoard()
+        })
+    });
+    
+    resetBtn.addEventListener("click", (e) => {
+        gameBoard.resetBoard();
+    });
+
+    function updateGameBoard() {
+        for(let i = 0; i < cells.length; i++) {
+            cells[i].textContent = gameBoard.board[i];
+        }
+    }
 
     return {
+        updateGameBoard
     }
 })();
 
+displayController.updateGameBoard();
+// factory function for displaying the game
+// const gameController(() => {
 
-const gameController(() => {
-
-})();
+// })();
