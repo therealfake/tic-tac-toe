@@ -1,51 +1,47 @@
+let currPlayer;
 
 /**
  * Player factory function
- * @param {*} name 
+ * @param {String} name player's name
+ * @param {String} piece either 'X' or 'O'
  * @returns 
  */
- const player = (name, piece) => {
+const player = (name, piece) => {
     return { name, piece };
 }
 
+/**
+ * gameBoard module pattern object
+ */
 const gameBoard = (() => {
     let board = ['','','','','','','','',''];
+    
+    const setCell = (index, sign) => {
+        board[index] = sign;
+    }
 
-    resetBtn = document.getElementById('reset-btn');
-    cells = document.querySelectorAll('.cell')
-    resetBtn.addEventListener('click', () => {
+    const getCell = (index) => {
+        return board[index];
+    }
+
+    const resetBoard = () => {
         for(let i = 0; i < board.length; i++) {
-            cells[i].textContent = '';
             board[i] = '';
         }
-    })
-    return { board }
+    }
+
+    return { board, setPlayer }
 })();
 
-const p1 = player('Elon', 'X')
-
-const displayController = ((board, piece) => {
-    
-
-    for(let i = 0; i < board.length; i++) {
-        cells[i].addEventListener('click', (e) => {
-            if (board[i] == '') {
-                e.target.textContent = piece;
-                board[i] = piece;
-            }
-        })
-        // add hovering such that lighter colored piece shows where user hovers
-    }
-
-    const drawGrid = () => {
-        for(let i = 0; i < board.length; i++) {
-            cells[i].textContent = board[i];
-        }
-    }
+// Controller for displaying Game
+const displayController = (() => {
+    cells = document.querySelectorAll('.cell')
 
     return {
-        drawGrid
     }
-})(gameBoard.board, p1.piece);
+})();
 
-// displayController.drawGrid()
+
+const gameController(() => {
+
+})();
