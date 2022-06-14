@@ -45,11 +45,16 @@ body {
     background-color: var(--cell-color);
 }
 
+.cell:hover{
+    cursor: pointer;
+}
+
 #reset-btn {
     width: 100px;
     height: 30px;
     border: none;
     border-radius: 15px;
+    font-weight: bold;
 }
 
 #reset-btn:hover {
