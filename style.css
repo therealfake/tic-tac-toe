@@ -1,5 +1,5 @@
 :root {
-    --background-color: #e1caca;
+    --background-color: #c09595;
     --cell-color: #828d97;
 }
 
@@ -12,6 +12,7 @@
 
 body {
     background-color: var(--background-color);
+    padding-top: 10rem;
 }
 
 #game-board {
@@ -49,4 +50,9 @@ body {
     height: 30px;
     border: none;
     border-radius: 15px;
+}
+
+#reset-btn:hover {
+    cursor: pointer;
+    background-color: var(--cell-color);
 }
