@@ -111,6 +111,7 @@ const gameController = (() => {
     }
     function resetGame() {
         round = 0;
+        gameFinished = false;
     }
     
     return {
