@@ -1,6 +1,7 @@
 :root {
-    --background-color: #c09595;
-    --cell-color: #828d97;
+    --background-color: #fee2e2; 
+    --cell-color: #fca5a5;
+    --text-color: #7f1d1d;
 }
 
 * {
@@ -8,6 +9,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-color)
 }
 
 body {
@@ -49,12 +51,17 @@ body {
     cursor: pointer;
 }
 
+#result-msg {
+
+}
+
 #reset-btn {
     width: 100px;
     height: 30px;
     border: none;
     border-radius: 15px;
     font-weight: bold;
+    background-color: var(--cell-color);
 }
 
 #reset-btn:hover {

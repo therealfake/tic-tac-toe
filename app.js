@@ -88,10 +88,10 @@ const gameController = (() => {
         displayController.updateGameBoard();
         if (checkGame(cellIndex)) {
             gameFinished = true;
-            displayController.displayResult("You Win")
+            displayController.displayResult("You Win!")
         } else if (round == 9) {
             gameFinished = true;
-            displayController.displayResult("Tie Game")
+            displayController.displayResult("Tie!")
         }
     };
 
