@@ -51,10 +51,6 @@ body {
     cursor: pointer;
 }
 
-#result-msg {
-    padding: 10px;
-}
-
 #reset-btn {
     width: 100px;
     height: 30px;
@@ -62,6 +58,7 @@ body {
     border-radius: 15px;
     font-weight: bold;
     background-color: var(--cell-color);
+    margin-top: 20px;
 }
 
 #reset-btn:hover {

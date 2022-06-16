@@ -27,7 +27,7 @@ const gameBoard = (() => {
         }
     }
 
-    return { board, setCell, getCell, resetBoard };
+    return { setCell, getCell, resetBoard };
 })();
 
 // factory function for displaying the game
@@ -127,7 +127,7 @@ const gameController = (() => {
     return {
         setPlayer1, getPlayer1,
         setPlayer2, getPlayer2,
-        playRound, gameFinished, round, getCurrentPlayerPiece, getGameFinished, resetGame
+        playRound, getCurrentPlayerPiece, getGameFinished, resetGame
     };
     
 })();
