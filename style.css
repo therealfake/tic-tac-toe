@@ -52,7 +52,7 @@ body {
 }
 
 #result-msg {
-
+    padding: 10px;
 }
 
 #reset-btn {
@@ -66,5 +66,5 @@ body {
 
 #reset-btn:hover {
     cursor: pointer;
-    background-color: var(--cell-color);
+    color: var(--background-color);
 }
