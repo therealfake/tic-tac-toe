@@ -32,8 +32,14 @@ const gameBoard = (() => {
 
 // factory function for displaying the game
 const displayController = (() => {
+    currMode = document.getElementById('mode');
     cells = document.querySelectorAll('.cell');
     resetBtn = document.getElementById('reset-btn');
+
+    currMode.addEventListener("change", () => {
+        resetBtn.click();
+        gameController.setMode(currMode.value);
+    })
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].addEventListener("click", (e) => {
@@ -74,16 +80,18 @@ const gameController = (() => {
     let p2 = player('O');
     let players = [p1, p2];
     let round = 0;
+    let mode = 'one-player';
     let gameFinished = false;
 
     const setPlayer1 = (player) => { p1 = player };
     const setPlayer2 = (player) => { p2 = player };
     const getPlayer1 = () => { return p1 };
     const getPlayer2 = () => { return p2 };
+    const setMode = (selectedMode) => { mode = selectedMode };
 
     function playRound(cellIndex){
         round++;
-        console.log(round);
+        console.log(mode)
         gameBoard.setCell(cellIndex, getCurrentPlayerPiece());
         displayController.updateGameBoard();
         if (checkGame(cellIndex)) {
@@ -127,7 +135,9 @@ const gameController = (() => {
     return {
         setPlayer1, getPlayer1,
         setPlayer2, getPlayer2,
-        playRound, getCurrentPlayerPiece, getGameFinished, resetGame
+        setMode,
+        playRound, getCurrentPlayerPiece, 
+        getGameFinished, resetGame
     };
     
 })();
