@@ -17,6 +17,30 @@ body {
     padding-top: 10rem;
 }
 
+.dropdown {
+    position: relative;
+    display: block;
+    width: 8rem;
+    height: 2rem;
+    line-height: 3;
+    border-radius: 0.25rem;
+    padding-bottom: 10px;
+}
+
+#mode {
+    appearance: none;
+    outline: 0;
+    background: var(--cell-color);
+    background-image: none;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    border: 2px solid var(--text-color);
+    border-radius: 3px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
 #game-board {
     display: flex;
     flex-direction: column;
