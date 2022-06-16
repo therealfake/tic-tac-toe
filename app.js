@@ -45,7 +45,7 @@ const displayController = (() => {
     
     resetBtn.addEventListener("click", () => {
         gameBoard.resetBoard();
-        updateGameBoard();
+        resetDisplay();
         gameController.resetGame();
     });
 
@@ -55,10 +55,20 @@ const displayController = (() => {
         }
     }
 
-    return { updateGameBoard }
+    function displayResult(msg) {
+        resultMsg = document.getElementById('result-msg');
+        resultMsg.textContent = msg;
+    }
+
+    function resetDisplay() {
+        resultMsg = document.getElementById('result-msg');
+        resultMsg.textContent = '';
+        updateGameBoard();
+    }
+    return { updateGameBoard, displayResult }
 })();
 
-// factory function for displaying the game
+// factory function for playing the actual game
 const gameController = (() => {
     let p1 = player('X');
     let p2 = player('O');
@@ -78,10 +88,10 @@ const gameController = (() => {
         displayController.updateGameBoard();
         if (checkGame(cellIndex)) {
             gameFinished = true;
-            console.log(`Wins`)
+            displayController.displayResult("You Win")
         } else if (round == 9) {
             gameFinished = true;
-            console.log(gameFinished)
+            displayController.displayResult("Tie Game")
         }
     };
 
@@ -117,7 +127,7 @@ const gameController = (() => {
     return {
         setPlayer1, getPlayer1,
         setPlayer2, getPlayer2,
-        playRound, gameFinished, round, getCurrentPlayerPiece, getGameFinished,resetGame
+        playRound, gameFinished, round, getCurrentPlayerPiece, getGameFinished, resetGame
     };
     
 })();
