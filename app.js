@@ -58,8 +58,10 @@ const displayController = (() => {
             gameController.playRound(i);
             updateGameBoard();
             if (gameController.getMode() === 'one-player' && !gameController.getGameFinished()) {
-                gameController.simpleComputerMove();
-                updateGameBoard();
+                setTimeout(() => {
+                    gameController.simpleComputerMove();
+                    updateGameBoard();
+                },500)
             }
         })
     }
@@ -112,7 +114,7 @@ const gameController = (() => {
         if (checkGame(cellIndex)) {
             gameFinished = true;
             displayController.displayResult(`${getCurrentPlayerPiece()} Wins!`)
-        } else if (round == 9) {
+        } else if (round == 10) {
             gameFinished = true;
             displayController.displayResult("Tie!")
         }
