@@ -148,7 +148,7 @@ const gameController = (() => {
 
     
     function resetGame() {
-        round = 0;
+        round = 1;
         gameFinished = false;
     }
     
