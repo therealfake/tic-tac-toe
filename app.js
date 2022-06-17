@@ -56,7 +56,7 @@ const displayController = (() => {
         cells[i].addEventListener("click", (e) => {
             if (e.target.textContent !== "" || 
             gameController.getGameFinished() ||
-            gameController.getRound() % 2 == 0) return;
+            (gameController.getRound() % 2 == 0 && gameController.getMode() === 'one-player')) return;
             gameController.playRound(i);
             updateGameBoard();
             if (gameController.getMode() === 'one-player' && 
