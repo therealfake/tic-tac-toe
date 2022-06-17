@@ -54,10 +54,13 @@ const displayController = (() => {
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].addEventListener("click", (e) => {
-            if (e.target.textContent !== "" || gameController.getGameFinished()) return;
+            if (e.target.textContent !== "" || 
+            gameController.getGameFinished() ||
+            gameController.getRound() % 2 == 0) return;
             gameController.playRound(i);
             updateGameBoard();
-            if (gameController.getMode() === 'one-player' && !gameController.getGameFinished()) {
+            if (gameController.getMode() === 'one-player' && 
+            !gameController.getGameFinished()) {
                 setTimeout(() => {
                     gameController.simpleComputerMove();
                     updateGameBoard();
@@ -104,6 +107,7 @@ const gameController = (() => {
     const setPlayer2 = (player) => { p2 = player };
     const getPlayer1 = () => { return p1 };
     const getPlayer2 = () => { return p2 };
+    const getRound = () => { return round }
     const setMode = (selectedMode) => { mode = selectedMode };
     const getMode = () => { return mode };
     const getGameFinished = () =>{ return gameFinished };
@@ -158,9 +162,10 @@ const gameController = (() => {
         setPlayer1, getPlayer1,
         setPlayer2, getPlayer2,
         setMode, getMode,
-        simpleComputerMove,
-        playRound, getCurrentPlayerPiece, 
-        getGameFinished, resetGame
+        getRound, getCurrentPlayerPiece,
+        getGameFinished,
+        simpleComputerMove, playRound, 
+        resetGame
     };
     
 })();
