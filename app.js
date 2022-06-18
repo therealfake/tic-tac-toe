@@ -28,7 +28,6 @@ const gameBoard = (() => {
                 availible.push(i);
             }
         }
-        console.log(availible);
         return availible
     }
 
@@ -56,10 +55,10 @@ const displayController = (() => {
         cells[i].addEventListener("click", (e) => {
             if (e.target.textContent !== "" || 
             gameController.getGameFinished() ||
-            (gameController.getRound() % 2 == 0 && gameController.getMode() === 'one-player')) return;
+            (gameController.getRound() % 2 == 0 && gameController.getMode() !== 'two-player')) return;
             gameController.playRound(i);
             updateGameBoard();
-            if (gameController.getMode() === 'one-player' && 
+            if (gameController.getMode() !== 'two-player' && 
             !gameController.getGameFinished()) {
                 setTimeout(() => {
                     gameController.simpleComputerMove();
@@ -81,9 +80,13 @@ const displayController = (() => {
         }
     }
 
-    function displayResult(msg) {
+    function displayResult(result) {
         resultMsg = document.getElementById('result-msg');
-        resultMsg.textContent = msg;
+        if (result === 'Tie') {
+            resultMsg.textContent = ("Tie!");
+        } else {
+            resultMsg.textContent = (`${result} Wins!`);
+        }
     }
 
     function resetDisplay() {
@@ -103,10 +106,6 @@ const gameController = (() => {
     let mode = 'one-player';
     let gameFinished = false;
 
-    const setPlayer1 = (player) => { p1 = player };
-    const setPlayer2 = (player) => { p2 = player };
-    const getPlayer1 = () => { return p1 };
-    const getPlayer2 = () => { return p2 };
     const getRound = () => { return round }
     const setMode = (selectedMode) => { mode = selectedMode };
     const getMode = () => { return mode };
@@ -115,12 +114,10 @@ const gameController = (() => {
     function playRound(cellIndex){
         round++;
         gameBoard.setCell(cellIndex, getCurrentPlayerPiece());
-        if (checkGame(cellIndex)) {
+        let gameResult = checkGame();
+        if (gameResult) {
             gameFinished = true;
-            displayController.displayResult(`${getCurrentPlayerPiece()} Wins!`)
-        } else if (round == 10) {
-            gameFinished = true;
-            displayController.displayResult("Tie!")
+            displayController.displayResult(gameResult);
         }
     };
 
@@ -131,11 +128,10 @@ const gameController = (() => {
     function simpleComputerMove() {
         avalibleCells = gameBoard.getAvailibleCells();
         let pick = Math.floor((Math.random() * avalibleCells.length) + 1) - 1;
-        console.log(avalibleCells[pick]);
         playRound(avalibleCells[pick]);
     }
 
-    function checkGame(cellIndex) {
+    function checkGame() {
         const winningPaths = [
             [0, 1, 2],
             [3, 4, 5],
@@ -147,9 +143,20 @@ const gameController = (() => {
             [6, 4, 2]
         ];
         
-        return winningPaths
-        .filter(path => path.includes(cellIndex))
-        .some(path => path.every(index => gameBoard.getCell(index) == getCurrentPlayerPiece()));
+        xWin = winningPaths
+        .some(path => path.every(index => gameBoard.getCell(index) == 'X'));
+        oWin = winningPaths
+        .some(path => path.every(index => gameBoard.getCell(index) == 'O'));
+        
+        if (xWin) {
+            return 'X';
+        } else if(oWin){
+            return 'O';
+        } else if (round == 10) {
+            return 'Tie';
+        } else {
+            return null;
+        }
     };
 
     
@@ -159,8 +166,6 @@ const gameController = (() => {
     }
     
     return {
-        setPlayer1, getPlayer1,
-        setPlayer2, getPlayer2,
         setMode, getMode,
         getRound, getCurrentPlayerPiece,
         getGameFinished,
