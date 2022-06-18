@@ -53,18 +53,8 @@ const displayController = (() => {
 
     for(let i = 0; i < cells.length; i++) {
         cells[i].addEventListener("click", (e) => {
-            if (e.target.textContent !== "" || 
-            gameController.getGameFinished() ||
-            (gameController.getRound() % 2 == 0 && gameController.getMode() !== 'two-player')) return;
+            if (e.target.textContent !== "" || gameController.getGameFinished()) return;
             gameController.playRound(i);
-            updateGameBoard();
-            if (gameController.getMode() !== 'two-player' && 
-            !gameController.getGameFinished()) {
-                setTimeout(() => {
-                    gameController.simpleComputerMove();
-                    updateGameBoard();
-                },500)
-            }
         })
     }
     
@@ -112,14 +102,31 @@ const gameController = (() => {
     const getGameFinished = () =>{ return gameFinished };
 
     function playRound(cellIndex){
+        if (round % 2 == 0 && mode !== 'two-player') return;
+
         round++;
         gameBoard.setCell(cellIndex, getCurrentPlayerPiece());
+        displayController.updateGameBoard();
         let gameResult = checkGame();
         if (gameResult) {
             gameFinished = true;
             displayController.displayResult(gameResult);
+        } else if (mode !=='two-player') {
+            setTimeout(() => { computerRound() }, 500);
         }
+
     };
+
+    function computerRound() {
+        round++;
+        gameBoard.setCell(simpleComputerMove(), getCurrentPlayerPiece());
+        displayController.updateGameBoard();
+        let gameResult = checkGame();
+        if (gameResult) {
+            gameFinished = true;
+            displayController.displayResult(gameResult);
+        };
+    }
 
     function getCurrentPlayerPiece() {
         return players[round % 2].piece
@@ -128,7 +135,7 @@ const gameController = (() => {
     function simpleComputerMove() {
         avalibleCells = gameBoard.getAvailibleCells();
         let pick = Math.floor((Math.random() * avalibleCells.length) + 1) - 1;
-        playRound(avalibleCells[pick]);
+        return avalibleCells[pick];
     }
 
     function checkGame() {
