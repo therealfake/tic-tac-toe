@@ -28,16 +28,19 @@ const gameBoard = (() => {
                 availible.push(i);
             }
         }
-        return availible
+        return availible;
     }
 
+    const boardIsFull = () => {
+        return board.every(index => index !=='');
+    }
     const resetBoard = () => {
         for(let i = 0; i < board.length; i++) {
             board[i] = '';
         }
     }
 
-    return { setCell, getCell, getAvailibleCells, resetBoard };
+    return { board, setCell, getCell, getAvailibleCells, boardIsFull, resetBoard };
 })();
 
 // factory function for displaying the game
@@ -119,7 +122,9 @@ const gameController = (() => {
 
     function computerRound() {
         round++;
-        gameBoard.setCell(simpleComputerMove(), getCurrentPlayerPiece());
+        let availibleCells = gameBoard.getAvailibleCells();
+        let computer = mode === 'one-player' ? simpleComputerMove(availibleCells): aiComputerMove(availibleCells);
+        gameBoard.setCell(computer, getCurrentPlayerPiece());
         displayController.updateGameBoard();
         let gameResult = checkGame();
         if (gameResult) {
@@ -132,10 +137,56 @@ const gameController = (() => {
         return players[round % 2].piece
     };
 
-    function simpleComputerMove() {
-        avalibleCells = gameBoard.getAvailibleCells();
-        let pick = Math.floor((Math.random() * avalibleCells.length) + 1) - 1;
-        return avalibleCells[pick];
+    function simpleComputerMove(availibleCells) {
+        let pick = Math.floor((Math.random() * availibleCells.length) + 1) - 1;
+        return availibleCells[pick];
+    }
+
+    function aiComputerMove(availibleCells) {
+        let bestScore = -Infinity;
+        let bestMove;
+        for (let i = 0; i < availibleCells.length; i++) {
+            gameBoard.setCell(availibleCells[i], 'O');
+            let score = minimax(false);
+            gameBoard.setCell(availibleCells[i], '');
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = availibleCells[i];
+            }
+        }
+        return bestMove;
+    }
+
+    let scores = {'O': 1, 'X': -1, 'Tie': 0};
+
+    function minimax(isMaximizing) {
+        let result = checkGame();
+
+        if (result != null) {
+            return scores[result];
+        }
+
+        if (isMaximizing) { // computer is maximizing player
+            let availibleCells = gameBoard.getAvailibleCells();
+            let bestScore = -Infinity;
+            for (let i = 0; i < availibleCells.length; i++) {
+                gameBoard.setCell(availibleCells[i], 'O');
+                let score = minimax(false);
+                gameBoard.setCell(availibleCells[i], '');
+                bestScore = Math.max(bestScore, score);
+            }
+            return bestScore;
+        } else { // human i the minimizing player
+            let availibleCells = gameBoard.getAvailibleCells();
+            let bestScore = Infinity;
+            for (let i = 0; i < availibleCells.length; i++) {
+                gameBoard.setCell(availibleCells[i], 'X');
+                let score = minimax(true);
+                gameBoard.setCell(availibleCells[i], '');
+                bestScore = Math.min(bestScore, score);
+            }
+            return bestScore;
+        }
     }
 
     function checkGame() {
@@ -159,7 +210,7 @@ const gameController = (() => {
             return 'X';
         } else if(oWin){
             return 'O';
-        } else if (round == 10) {
+        } else if (gameBoard.boardIsFull()) {
             return 'Tie';
         } else {
             return null;
@@ -181,3 +232,20 @@ const gameController = (() => {
     };
     
 })();
+// gameController.setMode('unbeatable-ai');
+// gameBoard.setCell(0,'X');
+// gameBoard.setCell(1,'X');
+// gameBoard.setCell(8,'X');
+// gameBoard.setCell(2,'O');
+// gameBoard.setCell(4,'O');
+// gameController.playRound(5);
+
+// gameController.setMode('unbeatable-ai');
+// gameBoard.setCell(1,'X');
+// gameBoard.setCell(3,'X');
+// gameBoard.setCell(6,'X');
+// gameBoard.setCell(0,'O');
+// gameBoard.setCell(2,'O');
+// gameBoard.setCell(4,'O');
+// gameController.playRound(8);
+
