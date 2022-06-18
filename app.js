@@ -40,7 +40,7 @@ const gameBoard = (() => {
         }
     }
 
-    return { board, setCell, getCell, getAvailibleCells, boardIsFull, resetBoard };
+    return { setCell, getCell, getAvailibleCells, boardIsFull, resetBoard };
 })();
 
 // factory function for displaying the game
@@ -99,7 +99,6 @@ const gameController = (() => {
     let mode = 'one-player';
     let gameFinished = false;
 
-    const getRound = () => { return round }
     const setMode = (selectedMode) => { mode = selectedMode };
     const getMode = () => { return mode };
     const getGameFinished = () =>{ return gameFinished };
@@ -225,27 +224,9 @@ const gameController = (() => {
     
     return {
         setMode, getMode,
-        getRound, getCurrentPlayerPiece,
-        getGameFinished,
-        simpleComputerMove, playRound, 
+        getGameFinished, playRound, 
         resetGame
     };
     
 })();
-// gameController.setMode('unbeatable-ai');
-// gameBoard.setCell(0,'X');
-// gameBoard.setCell(1,'X');
-// gameBoard.setCell(8,'X');
-// gameBoard.setCell(2,'O');
-// gameBoard.setCell(4,'O');
-// gameController.playRound(5);
-
-// gameController.setMode('unbeatable-ai');
-// gameBoard.setCell(1,'X');
-// gameBoard.setCell(3,'X');
-// gameBoard.setCell(6,'X');
-// gameBoard.setCell(0,'O');
-// gameBoard.setCell(2,'O');
-// gameBoard.setCell(4,'O');
-// gameController.playRound(8);
 
